@@ -7,6 +7,7 @@
 #include "auth/User.h"
 #include "../Courses/Courses.h"
 #include "../Timetable/TimeTable.h"
+#include "view.h"
 
 class Init {
 };
