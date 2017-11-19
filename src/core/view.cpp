@@ -33,7 +33,7 @@ void SplashView::display() {
     format_output("1. Login");
     format_output("2. Register");
     format_output("0. Exit");
-    cout << endl << current_user->get_fullname();
+    cout << endl << current_user->get_fullname() << endl;
 }
 
 SplashView *SplashView::getInstance(View *global_view) {
@@ -45,7 +45,8 @@ SplashView::~SplashView() {
     cout << "Splash Destructed\n";
 }
 
-LoginView *LoginView::getInstance() {
+LoginView *LoginView::getInstance(View *global_view) {
+    delete global_view;
     return new LoginView;
 }
 
@@ -57,19 +58,26 @@ void LoginView::display() {
     cin >> username;
     format_output("Enter password");
     cin >> password;
-    if (User::all().find(username) != User::all().end() &&
-        User::all().find(username)->second.check_password(password)) {
-        current_user = &(User::all().find(username)->second);
+    auto user = User::all().find(username);
+    if (user != User::all().end() &&
+        user->second.check_password(password)) {
+        current_user = &(user->second);
     } else {
         cout << "Either username or password is incorrect\n";
     }
+    cout << current_user->get_fullname() << " successfully logged in" << endl;
+    system("pause");
 }
 
-RegisterView *RegisterView::getInstance() {
+RegisterView *RegisterView::getInstance(View *global_view) {
+    delete global_view;
     return new RegisterView;
 }
 
 void RegisterView::display() {
     system("cls");
     format_output("Welcome to register screen");
+    User::create_new_user();
+    system("pause");
+
 }

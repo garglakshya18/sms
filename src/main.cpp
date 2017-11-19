@@ -17,13 +17,13 @@ int main() {
     cin >> s;
     switch (s) {
         case 1: {
-            global_view = LoginView::getInstance();
+            global_view = LoginView::getInstance(global_view);
             global_view->display();
             break;
         }
 
         case 2: {
-            global_view = LoginView::getInstance();
+            global_view = RegisterView::getInstance(global_view);
             global_view->display();
             break;
         }

@@ -31,6 +31,8 @@ public:
 
     User(string, string, string);
 
+    static void create_new_user();
+
     static map<string, User> &all();
 
     string get_username();

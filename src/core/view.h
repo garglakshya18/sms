@@ -34,7 +34,7 @@ public:
 
 class LoginView : public View {
 public:
-    static LoginView *getInstance();
+    static LoginView *getInstance(View *);
 
     void display() override;
 
@@ -43,9 +43,10 @@ public:
 
 class RegisterView : public View {
 public:
-    static RegisterView *getInstance();
+    static RegisterView *getInstance(View *);
 
     void display() override;
+
 
 };
 
