@@ -5,6 +5,8 @@
 #ifndef SMS_INIT_H
 #define SMS_INIT_H
 #include "auth/User.h"
+#include "../Courses/Courses.h"
+#include "../Timetable/TimeTable.h"
 
 class Init {
 };

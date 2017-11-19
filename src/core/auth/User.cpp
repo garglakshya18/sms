@@ -56,12 +56,14 @@ string User::get_shortname() const
 }
 void User::save()
 {
-    object_list.push_back(*this);
+    object_list.insert(pair<string, User>(this->_username, *this));
 }
-std::vector<User> User::all()
+
+map<string, User> &User::all()
 {
     return object_list;
 }
+
 //bool User::save()
 //{
 //    outputFile.open(filename, ios::app);

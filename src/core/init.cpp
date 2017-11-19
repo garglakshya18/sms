@@ -4,4 +4,7 @@
 
 #include "init.h"
 
-std::vector<User> User::object_list = {};
+std::map<string, User> User::object_list = {};
+std::map<string, Courses> Courses::course_list = {};
+string **TimeTable::tt = nullptr;
+

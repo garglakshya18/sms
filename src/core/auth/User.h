@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
+#include <string>
 #include "../../database/handler.h"
 
 using namespace std;
@@ -21,7 +23,7 @@ public:
 
 class User {
 private:
-    static std::vector<User> object_list;
+    static map<string, User> object_list;
 protected:
     string _username, _first_name, _last_name, _password;
 public:
@@ -29,7 +31,7 @@ public:
 
     User(string, string, string);
 
-    static std::vector<User> all();
+    static map<string, User> &all();
 
     string get_username();
 
