@@ -5,8 +5,9 @@
 #define SMS_USER_H
 
 #include <iostream>
-#include <vector>
-#include "../../database/handler.h"
+#include <string>
+#include <map>
+#include <fstream>
 
 using namespace std;
 
@@ -19,17 +20,19 @@ public:
     string print_error();
 };
 
+
 class User {
-private:
-    static std::vector<User> object_list;
+    static map<string, User> object_list;
 protected:
     string _username, _first_name, _last_name, _password;
 public:
     User();
 
-    User(string, string, string);
+    User(string&, string&, string&);
 
-    static std::vector<User> all();
+    User(const char*, const char*, const char*);
+
+    static map<string, User> all();
 
     string get_username();
 
@@ -41,11 +44,11 @@ public:
 
     string get_shortname() const;
 
+    void set_username(const string& /* unused */);
+
     virtual void set_password(const string&);
 
     virtual bool check_password(const string&);
-
-    friend class UserManager;
 
     void save();
 };

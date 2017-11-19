@@ -3,14 +3,12 @@
 //
 #include "User.h"
 
-using namespace std;
-
-User::User(string username, string first_name, string last_name)
+static map<string, User> object_list = {};
+User::User(string& username, string& first_name, string& last_name)
 {
-    //filename = "Users.csv";
-    _username = move(username);
-    _first_name = move(first_name);
-    _last_name = move(last_name);
+    _username = username;
+    _first_name = first_name;
+    _last_name = last_name;
 }
 
 string User::get_username()
@@ -56,18 +54,22 @@ string User::get_shortname() const
 }
 void User::save()
 {
-    object_list.push_back(*this);
+    object_list.insert(pair<string, User>(this->get_username(), *this));
 }
-std::vector<User> User::all()
+map<string, User> User::all()
 {
     return object_list;
 }
-//bool User::save()
-//{
-//    outputFile.open(filename, ios::app);
-//    outputFile << _username << "," << _first_name << "," << _last_name << "," << _password << std::endl;
-//    outputFile.close();
-//};
+void User::set_username(const string& username)
+{
+    _username = username;
+}
+User::User(const char* username, const char* first_name, const char* last_name)
+{
+    _username = username;
+    _first_name = first_name;
+    _last_name = last_name;
+}
 
 AnonymousUser::AnonymousUser()
 {
@@ -86,19 +88,14 @@ bool AnonymousUser::is_authenticated()
     return false;
 }
 
-void AnonymousUser::set_password(const string& string1)
+void AnonymousUser::set_password(const string& /* unused */)
 {
     throw UserError("No set_password method is implemented for Anonymous User");
 }
-
-bool AnonymousUser::check_password(const string& raw_password)
+bool AnonymousUser::check_password(const string& /* unused */)
 {
     throw UserError("No check_password method is implemented for Anonymous User");
 }
-//bool AnonymousUser::save()
-//{
-//    throw UserError("An anonymous user can't be saved in database");
-//}
 string UserError::print_error()
 {
     return _err;

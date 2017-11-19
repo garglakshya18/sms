@@ -4,4 +4,8 @@
 
 #include "init.h"
 
-std::vector<User> User::object_list = {};
+void Init::init()
+{
+//    User::writeData();
+    std::cout << "Init called\n";
+}

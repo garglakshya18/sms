@@ -4,9 +4,13 @@
 
 #ifndef SMS_INIT_H
 #define SMS_INIT_H
+
+#include <iostream>
 #include "auth/User.h"
 
 class Init {
+public:
+    static void init();
 };
 
 #endif //SMS_INIT_H
