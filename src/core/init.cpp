@@ -4,8 +4,10 @@
 
 #include "init.h"
 
+bool EXIT_CODE = false;
+VIEW_CHOICES view_choice = VIEW_CHOICES(SPLASH);
+
 void Init::init()
 {
-//    User::writeData();
     std::cout << "Init called\n";
 }

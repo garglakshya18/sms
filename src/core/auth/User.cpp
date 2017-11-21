@@ -1,14 +1,19 @@
 //
 // Created by Ajat Prabha on 03-10-2017.
 //
-#include "User.h"
+#include "user.h"
 
-static map<string, User> object_list = {};
+
+User* current_user = new AnonymousUser;
+
+map<string, User> User::object_list = {};
+
 User::User(string& username, string& first_name, string& last_name)
 {
     _username = username;
     _first_name = first_name;
     _last_name = last_name;
+    _superuser_status = false;
 }
 
 string User::get_username()
@@ -46,15 +51,17 @@ User::User()
     _username = "guest";
     _first_name = "FGuest";
     _last_name = "LGuest";
+    _superuser_status = false;
 }
 
 string User::get_shortname() const
 {
     return _first_name;
 }
-void User::save()
+User& User::save()
 {
     object_list.insert(pair<string, User>(this->get_username(), *this));
+    return *this;
 }
 map<string, User> User::all()
 {
@@ -69,6 +76,15 @@ User::User(const char* username, const char* first_name, const char* last_name)
     _username = username;
     _first_name = first_name;
     _last_name = last_name;
+    _superuser_status = false;
+}
+void User::make_superuser()
+{
+    _superuser_status = true;
+}
+bool User::is_superuser()
+{
+    return _superuser_status;
 }
 
 AnonymousUser::AnonymousUser()
@@ -95,6 +111,10 @@ void AnonymousUser::set_password(const string& /* unused */)
 bool AnonymousUser::check_password(const string& /* unused */)
 {
     throw UserError("No check_password method is implemented for Anonymous User");
+}
+bool AnonymousUser::is_superuser()
+{
+    return false;
 }
 string UserError::print_error()
 {

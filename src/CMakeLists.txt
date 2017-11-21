@@ -3,5 +3,5 @@ project(SMS)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp core/auth/User.cpp core/auth/User.h core/init.cpp core/init.h)
+set(SOURCE_FILES main.cpp core/auth/user.cpp core/auth/user.h core/init.cpp core/init.h core/view.cpp core/view.h core/menu.cpp core/menu.h)
 add_executable(SMS ${SOURCE_FILES})

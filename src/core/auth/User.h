@@ -24,6 +24,7 @@ public:
 class User {
     static map<string, User> object_list;
 protected:
+    bool _superuser_status;
     string _username, _first_name, _last_name, _password;
 public:
     User();
@@ -44,26 +45,34 @@ public:
 
     string get_shortname() const;
 
+    void make_superuser();
+
+    virtual bool is_superuser();
+
     void set_username(const string& /* unused */);
 
     virtual void set_password(const string&);
 
     virtual bool check_password(const string&);
 
-    void save();
+    User& save();
 };
+
+extern User* current_user;
 
 class AnonymousUser: public User {
 public:
     AnonymousUser();
 
-    bool is_anonymous() override;
+    bool is_anonymous() final;
 
-    bool is_authenticated() override;
+    bool is_authenticated() final;
 
-    void set_password(const string& /*unused*/) override;
+    bool is_superuser() final;
 
-    bool check_password(const string& /*unused*/) override;
+    void set_password(const string& /*unused*/) final;
+
+    bool check_password(const string& /*unused*/) final;
 };
 
 #endif //SMS_USER_H
