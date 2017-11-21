@@ -7,13 +7,16 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <map>
+#include "../core/auth/User.h"
 #include "../Courses/Courses.h"
 
 using namespace std;
 
 class attendance{
 private:
-    vector<bool> attend;
+    static map<User, vector<Courses> > attendance_list;
 public:
     attendance();
 

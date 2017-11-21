@@ -14,7 +14,7 @@ attendance::~attendance(){
 }
 
 void attendance::mark_present(int day) {
-    if(day-1<=attend.size()&&day>0){
+    /*if(day-1<=attend.size()&&day>0){
         if(day-1==attend.size()){
             attend.push_back(TRUE);
         }
@@ -30,11 +30,11 @@ void attendance::mark_present(int day) {
             cout << "Please mark the attendance of previous days first. You have currently marked attendance for only "
                  << attend.size() << ".\n";
         }
-    }
+    }*/
 }
 
 void attendance::mark_absent(int day) {
-    if(day-1<=attend.size()&&day>0){
+    /*if(day-1<=attend.size()&&day>0){
         if(day-1==attend.size()){
             attend.push_back(FALSE);
         }
@@ -50,13 +50,13 @@ void attendance::mark_absent(int day) {
             cout << "Please mark the attendance of previous days first. You have currently marked attendance for only "
                  << attend.size() << ".\n";
         }
-    }
+    }*/
 }
 
 void attendance::edit_attendance(string course, int day, bool attendance) {
-    if(Courses::all().find(course) == Courses::all().end()){
+    /*if(Courses::all().find(course) == Courses::all().end()){
         cout<<"This course doesn't exist.\n";
     }
     else {
-    }
+    }*/
 }
