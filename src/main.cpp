@@ -3,8 +3,40 @@
 
 using namespace std;
 
+
 int main() {
-    int t = 1;
+    User user("ajatprabha", "Ajat", "Prabha");
+    user.set_password("golmaal");
+    user.save();
+    View *global_view = nullptr;
+    global_view = View::getInstance(global_view);
+    global_view = SplashView::getInstance(global_view);
+    global_view->display();
+
+    int s;
+    cin >> s;
+    switch (s) {
+        case 1: {
+            global_view = LoginView::getInstance(global_view);
+            global_view->display();
+            break;
+        }
+
+        case 2: {
+            global_view = RegisterView::getInstance(global_view);
+            global_view->display();
+            break;
+        }
+        case 0: {
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+
+    /*
+      int t=1;
     while (t) {
         cout << "1. User\n2. Add Course\n3. Remove course\n4. Create TimeTable\n5. Show TimeTable\n0. exit" << endl;
         int n;
@@ -58,8 +90,6 @@ int main() {
                 break;
             }
         }
-    }
-
-
+    }*/
     return 0;
 }

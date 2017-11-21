@@ -6,5 +6,6 @@
 
 std::map<string, User> User::object_list = {};
 std::map<string, Courses> Courses::course_list = {};
+User *View::current_user = new AnonymousUser();
 string **TimeTable::tt = nullptr;
 
