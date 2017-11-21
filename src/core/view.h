@@ -7,20 +7,18 @@
 
 #include "auth/User.h"
 #include <iomanip>
-#include <stdlib.h>
-#include <conio.h>
+#include <cstdlib>
 
 class View {
-protected:
-    static User *current_user;
 public:
+    static User *current_user;
     static View *getInstance(View *);
 
     virtual void display();
 
     void format_output(const string &);
 
-    ~View();
+    virtual ~View() = default;
 };
 
 class SplashView : public View {
@@ -29,7 +27,7 @@ public:
 
     void display() override;
 
-    ~SplashView();
+    ~SplashView() override = default;
 };
 
 class LoginView : public View {
@@ -44,6 +42,15 @@ public:
 class RegisterView : public View {
 public:
     static RegisterView *getInstance(View *);
+
+    void display() override;
+
+
+};
+
+class DetailView : public View {
+public:
+    static DetailView *getInstance(View *);
 
     void display() override;
 

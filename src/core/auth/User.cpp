@@ -7,10 +7,10 @@
 using namespace std;
 
 User::User(string username, string first_name, string last_name) {
-    //filename = "Users.csv";
     _username = move(username);
     _first_name = move(first_name);
     _last_name = move(last_name);
+    superuser_status = false;
 }
 
 string User::get_username() {
@@ -41,50 +41,29 @@ User::User() {
     _username = "guest";
     _first_name = "FGuest";
     _last_name = "LGuest";
+    superuser_status = false;
 }
 
 string User::get_shortname() const {
     return _first_name;
 }
 
-void User::save() {
+User &User::save() {
     object_list.insert(pair<string, User>(this->_username, *this));
+    return *this;
 }
 
 map<string, User> &User::all() {
     return object_list;
 }
 
-void User::create_new_user() {
-
-    cout << "At present there are " << object_list.size() << " users in the system" << endl;
-    string username, f_name, l_name, pass = "   ", c_pass = "     ";
-    cout << "Enter username, first_name, last_name" << endl;
-    cin >> username >> f_name >> l_name;
-    User u(username, f_name, l_name);
-    while (pass != c_pass) {
-        if (pass != "   ") {
-            cout << "Password doesn't match, retry!" << endl;
-        }
-        cout << "Enter password" << endl;
-        cin >> pass;
-        cout << "Confirm password" << endl;
-        cin >> c_pass;
-    }
-    u.set_password(pass);
-    u.save();
-    cout << u.get_fullname() << " successfully registered" << endl;
-    cout << "Now there are " << object_list.size() << " users in the system" << endl;
+void User::make_superuser() {
+    superuser_status = true;
 }
 
-
-
-//bool User::save()
-//{
-//    outputFile.open(filename, ios::app);
-//    outputFile << _username << "," << _first_name << "," << _last_name << "," << _password << std::endl;
-//    outputFile.close();
-//};
+bool User::is_superuser() {
+    return superuser_status;
+}
 
 AnonymousUser::AnonymousUser() {
     _username = "anonymous";
@@ -106,6 +85,10 @@ void AnonymousUser::set_password(const string &string1) {
 
 bool AnonymousUser::check_password(const string &raw_password) {
     throw UserError("No check_password method is implemented for Anonymous User");
+}
+
+bool AnonymousUser::is_superuser() {
+    return false;
 }
 
 //bool AnonymousUser::save()
