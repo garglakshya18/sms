@@ -1,3 +1,0 @@
-D:/DevData/OOAD/SMS/cmake-build-debug/CMakeFiles/SMS.dir
-D:/DevData/OOAD/SMS/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/DevData/OOAD/SMS/cmake-build-debug/CMakeFiles/rebuild_cache.dir

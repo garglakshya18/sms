@@ -5,6 +5,7 @@ using namespace std;
 
 int SMS()
 {
+    Init::init();
     Menu* menu = Menu::getInstance();
     do {
         menu->display();

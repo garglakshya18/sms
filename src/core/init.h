@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "auth/user.h"
+#include "../courses/courses.h"
 #include "menu.h"
 #include "view.h"
 

@@ -16,8 +16,8 @@ void Menu::display()
     delete global_view;
     if (START) {
         global_view = new SplashView;
-        global_view->display();
         START = false;
+        global_view->display();
         return;
     }
     switch (view_choice) {
@@ -30,12 +30,14 @@ void Menu::display()
         break;
     }
     case DETAIL: {
-        global_view = new DetailView;
+        if(current_user->is_superuser()) global_view = new AdminDetailView;
+        else global_view = new StudentDetailView;
         break;
     }
     default: {
         cout << "Invalid Choice\n";
         EXIT_CODE = true;
+        break;
     }
     }
     global_view->display();
