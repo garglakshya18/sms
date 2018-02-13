@@ -32,23 +32,55 @@ protected:
     string _username, _first_name, _last_name, _password;
 public:
     User();
+    //Default Constructor
+
     User(const string&, const string&, const string&);
+    //Parametrized Constructor
+
     User(const char*, const char*, const char*);
+    //Overloaded Constructor
+
     static map<string, User>& all();
+    //Returns the userlist
+
     string get_username() const;
+    //Returns username
+
     virtual bool is_anonymous();
+    //Returns whether the user is anonymous or not
+
     virtual bool is_authenticated();
+    //Returns whether the user is registered or not
+
     string get_fullname() const;
+    //Returns the full name of user
+
     string get_shortname() const;
+
     virtual void make_superuser();
+    //Function to make a function super user
+
     virtual bool is_superuser();
+    //Returns whether the user is super user or not
+
     void set_username(const string& /* unused */);
+
     int get_year();
+    //returns the year of a student
+
     void set_year(int);
+    //sets the value of a year
+
     virtual void set_password(const string&);
+    //sets the password of a year
+
     virtual bool check_password(const string&);
+
     User& save();
+
     bool remove();
+    //Removes a user from objectlist
+
 };
 
 extern User* current_user;

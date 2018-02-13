@@ -51,6 +51,7 @@ string User::get_shortname() const
 }
 User& User::save()
 {
+    if (User::all().find(this->get_username())!=User::all().end()) throw UserError("User already exists!");
     object_list.insert(pair<string, User>(this->get_username(), *this));
     return *this;
 }

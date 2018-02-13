@@ -14,17 +14,16 @@ void View::display()
 void View::format_output(const string& s)
 {
     int l = s.length();
-    auto pos = (170-l)/2;
+    auto pos = (120-l)/2;
     for (int i = 0; i<pos; i++) {
         cout << " ";
     }
-    system("color A1");
     cout << s << endl;
 }
 
 void SplashView::display()
 {
-    format_output("Welcome to SMS");
+    format_output("Welcome to Student Management System");
     cout << "\n";
     format_output("1. Login");
     format_output("0. Exit");
@@ -54,13 +53,19 @@ void LoginView::display()
     cin >> username;
     format_output("Enter password");
     cin >> password;
-    auto user = User::all().find(username);
-    if (user!=User::all().end() && user->second.check_password(password)) {
-        current_user = &(user->second);
-        cout << current_user->get_fullname() << " successfully logged in" << endl;
+    try {
+        auto user = User::all().find(username);
+        if (user!=User::all().end() && user->second.check_password(password)) {
+            current_user = &(user->second);
+            cout << current_user->get_fullname() << " successfully logged in" << endl;
+        }
+        else {
+            cout << "Either username or password is incorrect\n";
+            system("pause");
+        }
     }
-    else {
-        cout << "Either username or password is incorrect\n";
+    catch (UserError& e) {
+        cout << e.print_error() << endl;
     }
     if (current_user->is_authenticated()) view_choice = VIEW_CHOICES(DETAIL);
 }
@@ -83,24 +88,34 @@ void RegisterView::display()
         cin >> c_pass;
     }
     user.set_password(pass);
+    char ch;
+    user_type_choice:
     cout << "Do you want to make this user a superuser?\n1. Yes\n2. No\n";
-    int ch;
     cin >> ch;
     switch (ch) {
-    case 1:user.make_superuser();
+    case '1':user.make_superuser();
         break;
-    default: {
+    case '2': {
         cout << "Enter year of student: \n";
         int year;
         cin >> year;
         user.set_year(year);
         break;
     }
+    default: {
+        cout << "Please enter a valid choice. \n";
+        goto user_type_choice;
     }
-    user.save();
-    cout << user.get_fullname() << " successfully registered" << endl;
-    cout << "Now there are " << User::all().size() << " users in the system" << endl;
-    view_choice = VIEW_CHOICES(DETAIL);
+    }
+    try {
+        user.save();
+        cout << user.get_fullname() << " successfully registered" << endl;
+        cout << "Now there are " << User::all().size() << " users in the system" << endl;
+        view_choice = VIEW_CHOICES(DETAIL);
+    }
+    catch (UserError& e) {
+        cout << e.print_error() << endl;
+    }
 }
 
 void StudentDetailView::display()
@@ -147,6 +162,7 @@ void StudentDetailView::display()
     default:break;
     }
 }
+
 void AdminDetailView::display()
 {
     string header = "Welcome "+current_user->get_fullname();
@@ -159,7 +175,8 @@ void AdminDetailView::display()
     format_output("6. Show timetable");
     format_output("7. Update timetable");
     format_output("8. Update attendance");
-    format_output("9. Logout");
+    format_output("9. View attendance");
+    format_output("10. Logout");
     format_output("0. Exit");
     int choice;
     //cin.ignore();
@@ -180,12 +197,16 @@ void AdminDetailView::display()
         if (User::all().find(username)!=User::all().end()) {
             auto user = User::all().find(username)->second;
             bool erased = user.remove();
-            if (erased) cout << user.get_fullname() << " deleted.\n";
+            if (erased) {
+                cout << user.get_fullname() << " deleted.\n";
+                cout << "Now there are " << user.all().size() << " users in the system \n";
+            }
         }
         else cout << "User doesn't exist.\n";
         break;
     }
     case 3: {
+        rootrestart:
         cout << "Enter Course name: \n";
         string name, username;
         int year;
@@ -193,15 +214,24 @@ void AdminDetailView::display()
         cin.ignore();
         getline(cin, name);
         reenter_slot_year:
-        bool flag = false;
+        int flag = 0;
         cout << "Enter slot(A-F), year: \n";
         cin >> slot >> year;
         for (auto& i : Course::all()) {
             Course temp = i.second;
-            if (temp.get_course_name()==name || (temp.get_slot()==slot && temp.get_year()==year)) flag = true;
+            if (temp.get_course_name()==name) {
+                flag = 1;
+            }
+            else if (temp.get_slot()==slot && temp.get_year()==year) {
+                flag = 2;
+            }
         }
-        if (flag) {
+        if (flag==1) {
             cout << "Course already exists!\n";
+            goto reenter_slot_year;
+        }
+        if (flag==2) {
+            cout << "A course already exists in the given slot for the given year!\n";
             goto reenter_slot_year;
         }
         reenter_username:
@@ -209,12 +239,18 @@ void AdminDetailView::display()
         cin >> username;
         if (User::all().find(username)!=User::all().end() && User::all().find(username)->second.is_superuser()) {
             Course course(name, slot, username, year);
-            course.save();
-            cout << course.get_course_name() << " successfully registered.\n";
+            try {
+                course.save();
+                cout << course.get_course_name() << " successfully registered.\n";
+            }
+            catch (CourseError& e) {
+                cout << e.print_error() << endl;
+                goto rootrestart;
+            }
         }
         else {
             cin.ignore();
-            cout << "Enter a valid username: \n";
+            cout << "Enter a valid username \n";
             goto reenter_username;
         }
         break;
@@ -228,7 +264,7 @@ void AdminDetailView::display()
         int ch;
         cin >> ch;
         auto it = Course::all().begin();
-        advance(it,ch-1);
+        advance(it, ch-1);
         if (it!=Course::all().end()) {
             Course temp = it->second;
             temp.remove();
@@ -262,6 +298,13 @@ void AdminDetailView::display()
         break;
     }
     case 9: {
+        cout << "Enter the course name to view the attendance: \n";
+        string course;
+        cin >> course;
+        Attendance::show_attendance_course(course);
+        break;
+    }
+    case 10: {
         cout << "Do you really want to logout? (y/n)\n";
         char in;
         cin >> in;

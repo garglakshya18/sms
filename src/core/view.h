@@ -7,6 +7,7 @@
 
 #include <iomanip>
 #include <cstdlib>
+#include <iomanip>
 #include "init.h"
 #include "auth/user.h"
 #include "../courses/courses.h"
@@ -14,15 +15,16 @@
 
 using namespace std;
 
+//An abstract base class which provides interface to other derived classes
 class View {
 public:
-    View() = default;
-    virtual void display();
-    void format_output(const string&);
-    virtual ~View() = default;
+    View() = default;                       //Default constructor
+    virtual void display();                 //An interface to call the display() method of derived classes
+    void format_output(const string&);      //Formats the passed string to center it in the console
+    virtual ~View() = default;              //default virtual destructor
 };
 
-extern View* global_view;
+extern View* global_view;           //Makes an environment variable to store a pointer to current variable
 
 class SplashView: public View {
 public:
